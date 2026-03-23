@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UAMI Burger</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --vermelho: #C0392B;
+    --vermelho-escuro: #922B21;
+    --laranja: #E85D04;
+    --laranja-claro: #F48C06;
+    --amarelo-quente: #FAA307;
+    --preto: #0D0D0D;
+    --preto-suave: #1A1A1A;
+    --cinza-escuro: #222222;
+    --branco: #FAF5EE;
+    --branco-quente: #FFF3E0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--preto);
+    color: var(--branco);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* NOISE TEXTURE */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.5;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 2rem;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 20%, rgba(232, 93, 4, 0.35) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 50% at 80% 80%, rgba(192, 57, 43, 0.4) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 10% 70%, rgba(250, 163, 7, 0.2) 0%, transparent 60%),
+      var(--preto);
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,93,4,0.15) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 4s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+    50% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+  }
+
+  .hero-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--laranja-claro);
+    margin-bottom: 1.5rem;
+    position: relative;
+    animation: fadeUp 0.8s ease forwards;
+    opacity: 0;
+    animation-delay: 0.2s;
+  }
+
+  .hero-logo {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(7rem, 20vw, 18rem);
+    line-height: 0.85;
+    letter-spacing: 0.05em;
+    position: relative;
+    text-align: center;
+    animation: fadeUp 0.8s ease forwards;
+    opacity: 0;
+    animation-delay: 0.4s;
+    background: linear-gradient(135deg, var(--amarelo-quente) 0%, var(--laranja) 40%, var(--vermelho) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 40px rgba(232,93,4,0.5));
+  }
+
+  .hero-sub {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    font-style: italic;
+    color: rgba(250,245,238,0.7);
+    margin-top: 1.5rem;
+    letter-spacing: 0.05em;
+    animation: fadeUp 0.8s ease forwards;
+    opacity: 0;
+    animation-delay: 0.6s;
+    position: relative;
+  }
+
+  .hero-cta {
+    margin-top: 3rem;
+    display: flex;
+    gap: 1rem;
+    animation: fadeUp 0.8s ease forwards;
+    opacity: 0;
+    animation-delay: 0.8s;
+    position: relative;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--laranja), var(--vermelho));
+    color: var(--branco);
+    border: none;
+    padding: 1rem 2.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 40px rgba(232,93,4,0.5);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--branco);
+    border: 1px solid rgba(250,245,238,0.3);
+    padding: 1rem 2.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+    clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+  }
+
+  .btn-outline:hover {
+    background: rgba(250,245,238,0.05);
+    border-color: var(--laranja);
+    color: var(--laranja-claro);
+  }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.4;
+    animation: bounce 2s infinite;
+  }
+
+  .scroll-indicator span {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--laranja), transparent);
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 1.5rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to bottom, rgba(13,13,13,0.9) 0%, transparent 100%);
+    backdrop-filter: blur(10px);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 2rem;
+    letter-spacing: 0.1em;
+    background: linear-gradient(135deg, var(--laranja-claro), var(--vermelho));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: rgba(250,245,238,0.7);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    font-weight: 500;
+  }
+
+  .nav-links a:hover { color: var(--laranja-claro); }
+
+  /* SECTION STYLES */
+  section {
+    padding: 6rem 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .section-eyebrow {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--laranja);
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(3rem, 7vw, 6rem);
+    line-height: 1;
+    letter-spacing: 0.05em;
+    background: linear-gradient(135deg, var(--branco) 0%, rgba(250,245,238,0.5) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .section-divider {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(to right, var(--laranja), var(--vermelho));
+    margin: 1.5rem auto 0;
+  }
+
+  /* PROMOÇÕES */
+  .promos-section {
+    background: var(--preto-suave);
+    max-width: 100%;
+    padding: 6rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .promos-section::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    left: -100px;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(192,57,43,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .promos-section::after {
+    content: '';
+    position: absolute;
+    bottom: -100px;
+    right: -100px;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,93,4,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .promos-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .promo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .promo-card {
+    background: var(--cinza-escuro);
+    border: 1px solid rgba(232,93,4,0.15);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+    cursor: pointer;
+  }
+
+  .promo-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px rgba(232,93,4,0.25);
+    border-color: rgba(232,93,4,0.5);
+  }
+
+  .promo-card:hover .promo-img-overlay {
+    opacity: 0.6;
+  }
+
+  .promo-card:hover .promo-badge {
+    transform: scale(1.1) rotate(-5deg);
+  }
+
+  .promo-img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+    background: linear-gradient(135deg, var(--cinza-escuro), #2a1a0a);
+    position: relative;
+  }
+
+  .promo-img-placeholder {
+    width: 100%;
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .promo-img-placeholder::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .card-1 .promo-img-placeholder { background: linear-gradient(135deg, #3d0f0f, #6b1a1a); }
+  .card-2 .promo-img-placeholder { background: linear-gradient(135deg, #2d1500, #6b3200); }
+  .card-3 .promo-img-placeholder { background: linear-gradient(135deg, #1a0d00, #4a2a00); }
+  .card-4 .promo-img-placeholder { background: linear-gradient(135deg, #3a0a0a, #7a1f1f); }
+  .card-5 .promo-img-placeholder { background: linear-gradient(135deg, #1f0f00, #5a2f00); }
+  .card-6 .promo-img-placeholder { background: linear-gradient(135deg, #2a0000, #8b0000); }
+
+  .promo-img-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(13,13,13,0.8) 0%, transparent 60%);
+    opacity: 0.4;
+    transition: opacity 0.4s;
+  }
+
+  .promo-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: linear-gradient(135deg, var(--amarelo-quente), var(--laranja));
+    color: var(--preto);
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.1rem;
+    padding: 0.4rem 0.8rem;
+    letter-spacing: 0.05em;
+    transition: transform 0.3s ease;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+
+  .promo-tag {
+    position: absolute;
+    top: 1rem;
+    left: 0;
+    background: var(--vermelho);
+    color: var(--branco);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.8rem 0.3rem 1rem;
+    clip-path: polygon(0 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+  }
+
+  .promo-content {
+    padding: 1.5rem;
+  }
+
+  .promo-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.8rem;
+    letter-spacing: 0.05em;
+    color: var(--branco);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .promo-desc {
+    font-size: 0.85rem;
+    color: rgba(250,245,238,0.6);
+    line-height: 1.6;
+    margin-bottom: 1.2rem;
+  }
+
+  .promo-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .promo-price-block {}
+  .promo-old-price {
+    font-size: 0.75rem;
+    color: rgba(250,245,238,0.4);
+    text-decoration: line-through;
+  }
+
+  .promo-new-price {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 2rem;
+    background: linear-gradient(135deg, var(--laranja-claro), var(--vermelho));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+  }
+
+  .promo-btn {
+    background: transparent;
+    border: 1px solid rgba(232,93,4,0.4);
+    color: var(--laranja-claro);
+    padding: 0.6rem 1.2rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+  }
+
+  .promo-btn:hover {
+    background: linear-gradient(135deg, var(--laranja), var(--vermelho));
+    border-color: transparent;
+    color: var(--branco);
+  }
+
+  /* CARDÁPIO */
+  .cardapio-section {
+    padding: 6rem 2rem;
+  }
+
+  .category-tabs {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+
+  .tab {
+    background: transparent;
+    border: 1px solid rgba(250,245,238,0.15);
+    color: rgba(250,245,238,0.5);
+    padding: 0.6rem 1.5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 500;
+  }
+
+  .tab.active, .tab:hover {
+    background: linear-gradient(135deg, var(--laranja), var(--vermelho));
+    border-color: transparent;
+    color: var(--branco);
+  }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .menu-card {
+    background: var(--cinza-escuro);
+    border: 1px solid rgba(250,245,238,0.06);
+    overflow: hidden;
+    transition: all 0.35s ease;
+    position: relative;
+  }
+
+  .menu-card:hover {
+    border-color: rgba(232,93,4,0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+  }
+
+  .menu-card-emoji {
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mc-1 { background: linear-gradient(135deg, #2a1010, #4a1818); }
+  .mc-2 { background: linear-gradient(135deg, #1a1000, #3a2000); }
+  .mc-3 { background: linear-gradient(135deg, #1a0a0a, #3a1515); }
+  .mc-4 { background: linear-gradient(135deg, #0a1520, #152535); }
+  .mc-5 { background: linear-gradient(135deg, #1a1010, #3a2020); }
+  .mc-6 { background: linear-gradient(135deg, #101a10, #1a3a1a); }
+  .mc-7 { background: linear-gradient(135deg, #1a1500, #3a2f00); }
+  .mc-8 { background: linear-gradient(135deg, #1a0808, #4a1212); }
+
+  .bestseller-tag {
+    position: absolute;
+    top: 0.8rem;
+    left: 0;
+    background: linear-gradient(to right, var(--amarelo-quente), var(--laranja));
+    color: var(--preto);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.8rem 0.25rem 0.8rem;
+    clip-path: polygon(0 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+  }
+
+  .menu-card-body {
+    padding: 1.2rem 1.4rem;
+  }
+
+  .menu-card-name {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.4rem;
+    letter-spacing: 0.05em;
+    color: var(--branco);
+    margin-bottom: 0.3rem;
+  }
+
+  .menu-card-desc {
+    font-size: 0.78rem;
+    color: rgba(250,245,238,0.5);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  .menu-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .menu-price {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.6rem;
+    background: linear-gradient(135deg, var(--laranja-claro), var(--laranja));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .add-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--laranja), var(--vermelho));
+    border: none;
+    color: white;
+    font-size: 1.3rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  .add-btn:hover {
+    transform: scale(1.15);
+    box-shadow: 0 5px 20px rgba(232,93,4,0.5);
+  }
+
+  /* DESTAQUES STRIP */
+  .strip {
+    background: linear-gradient(90deg, var(--vermelho-escuro), var(--laranja), var(--amarelo-quente), var(--laranja), var(--vermelho-escuro));
+    background-size: 200% 100%;
+    animation: gradientMove 6s linear infinite;
+    padding: 1rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  @keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+  }
+
+  .strip-inner {
+    display: inline-flex;
+    gap: 3rem;
+    animation: marquee 20s linear infinite;
+  }
+
+  .strip-item {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+    color: var(--preto);
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .strip-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--preto);
+    border-radius: 50%;
+    opacity: 0.5;
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--preto);
+    border-top: 1px solid rgba(250,245,238,0.05);
+    padding: 4rem 2rem 2rem;
+    text-align: center;
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 4rem;
+    background: linear-gradient(135deg, var(--laranja), var(--vermelho));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+
+  .footer-info {
+    font-size: 0.8rem;
+    color: rgba(250,245,238,0.4);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-copy {
+    margin-top: 2rem;
+    font-size: 0.7rem;
+    color: rgba(250,245,238,0.2);
+    letter-spacing: 0.1em;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin: 1.5rem 0;
+  }
+
+  .social-link {
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(232,93,4,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: rgba(250,245,238,0.5);
+    font-size: 1rem;
+    transition: all 0.3s;
+    clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+  }
+
+  .social-link:hover {
+    background: linear-gradient(135deg, var(--laranja), var(--vermelho));
+    border-color: transparent;
+    color: var(--branco);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .promo-grid { grid-template-columns: 1fr; }
+    .menu-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">UAMI</div>
+  <ul class="nav-links">
+    <li><a href="#promocoes">Promoções</a></li>
+    <li><a href="#cardapio">Cardápio</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+  <a href="https://www.ifood.com.br/delivery/uberlandia-mg/uamiburguers-patrimonio/5c21b4ef-e6a5-4331-a794-6e3e85f37b72?utm_medium=share" target="_blank" class="btn-primary" style="font-size:0.75rem; padding: 0.7rem 1.5rem;">Pedir no iFood 🛵</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-glow"></div>
+
+  <span class="hero-label">Hamburgueria Artesanal · Sáb & Dom · 18h–23h</span>
+  <h1 class="hero-logo">UAMI</h1>
+  <p class="hero-sub">Aqui você encontra o inexplicável —<br>aquilo que não se explica, mas sente.</p>
+
+  <div class="hero-cta">
+    <a href="https://www.ifood.com.br/delivery/uberlandia-mg/uamiburguers-patrimonio/5c21b4ef-e6a5-4331-a794-6e3e85f37b72?utm_medium=share" target="_blank" class="btn-primary">Pedir Agora 🛵</a>
+    <a href="#cardapio" class="btn-outline">Ver Cardápio</a>
+  </div>
+
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</div>
+
+<!-- STRIP -->
+<div class="strip">
+  <div class="strip-inner">
+    <span class="strip-item">🔥 Blend Artesanal <span class="strip-dot"></span></span>
+    <span class="strip-item">🛵 Peça pelo iFood <span class="strip-dot"></span></span>
+    <span class="strip-item">⭐ O inexplicável em cada mordida <span class="strip-dot"></span></span>
+    <span class="strip-item">🔥 Smash Burger <span class="strip-dot"></span></span>
+    <span class="strip-item">🕐 Sáb & Dom · 18h às 23h <span class="strip-dot"></span></span>
+    <span class="strip-item">🍔 Somente nos finais de semana <span class="strip-dot"></span></span>
+    <span class="strip-item">🔥 Blend Artesanal <span class="strip-dot"></span></span>
+    <span class="strip-item">🛵 Peça pelo iFood <span class="strip-dot"></span></span>
+    <span class="strip-item">⭐ O inexplicável em cada mordida <span class="strip-dot"></span></span>
+    <span class="strip-item">🔥 Smash Burger <span class="strip-dot"></span></span>
+    <span class="strip-item">🕐 Sáb & Dom · 18h às 23h <span class="strip-dot"></span></span>
+    <span class="strip-item">🍔 Somente nos finais de semana <span class="strip-dot"></span></span>
+  </div>
+</div>
+
+<!-- PROMOÇÕES -->
+<div class="promos-section" id="promocoes">
+  <div class="promos-inner">
+    <div class="section-header">
+      <span class="section-eyebrow">🔥 Ofertas Imperdíveis</span>
+      <h2 class="section-title">Promoções</h2>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="promo-grid">
+
+      <!-- Card 1 - Abertura -->
+      <div class="promo-card card-1">
+        <div class="promo-img-placeholder">
+          🎉
+          <div class="promo-img-overlay"></div>
+        </div>
+        <span class="promo-badge">ABERTURA</span>
+        <span class="promo-tag">Promo de Abertura!!!</span>
+        <div class="promo-content">
+          <h3 class="promo-title">Combo Smash</h3>
+          <p class="promo-desc">Chegou a promoção para vocês que vão ser nossos primeiros clientes! Nosso delicioso Smash com batata + refri — para começar a noite do jeito certo e com o preço que todo mundo gosta.</p>
+          <div class="promo-footer">
+            <div class="promo-price-block">
+              <div class="promo-old-price">R$ 51,70</div>
+              <div class="promo-new-price">R$ 40,00</div>
+            </div>
+            <a href="https://www.ifood.com.br/delivery/uberlandia-mg/uamiburguers-patrimonio/5c21b4ef-e6a5-4331-a794-6e3e85f37b72?utm_medium=share&prato=90ca8f81-885f-483b-8c09-882acfe00af9" target="_blank" class="promo-btn">Pedir</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 - Uami para Dois -->
+      <div class="promo-card card-2">
+        <div class="promo-img-placeholder">
+          👫
+          <div class="promo-img-overlay"></div>
+        </div>
+        <span class="promo-badge">DUPLA</span>
+        <span class="promo-tag">Para Dois</span>
+        <div class="promo-content">
+          <h3 class="promo-title">Uami Para Dois</h3>
+          <p class="promo-desc">2 Uami Smash + batata + refri. Nada melhor que compartilhar um burger de verdade com quem a gente gosta. Fartura, preço justo e aquele sabor rústico que só a Uami tem.</p>
+          <div class="promo-footer">
+            <div class="promo-price-block">
+              <div class="promo-old-price">R$ 103,40</div>
+              <div class="promo-new-price">R$ 86,90</div>
+            </div>
+            <a href="https://www.ifood.com.br/delivery/uberlandia-mg/uamiburguers-patrimonio/5c21b4ef-e6a5-4331-a794-6e3e85f37b72?utm_medium=share&prato=22cdf24b-c2b9-43c2-9c48-7038c0f5602b" target="_blank" class="promo-btn">Pedir</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 - Inexplicável + Salad -->
+      <div class="promo-card card-3">
+        <div class="promo-img-placeholder">
+          🥗
+          <div class="promo-img-overlay"></div>
+        </div>
+        <span class="promo-badge">COMBO</span>
+        <span class="promo-tag">Especial</span>
+        <div class="promo-content">
+          <h3 class="promo-title">Inexplicável + Salad</h3>
+          <p class="promo-desc">Criamos essa seleção especial para quem quer fartura, preço justo e aquele sabor rústico que só a Uami tem. É pra comer bem, sem pressa e com muito sabor!</p>
+          <div class="promo-footer">
+            <div class="promo-price-block">
+              <div class="promo-old-price">—</div>
+              <div class="promo-new-price">R$ 92,00</div>
+            </div>
+            <a href="https://www.ifood.com.br/delivery/uberlandia-mg/uamiburguers-patrimonio/5c21b4ef-e6a5-4331-a794-6e3e85f37b72?utm_medium=share&prato=f986c131-4fad-4afd-9244-37eeb2ee2d33" target="_blank" class="promo-btn">Pedir</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 - Brasa Viva + Salad -->
+      <div class="promo-card card-4">
+        <div class="promo-img-placeholder">
+          🔥
+          <div class="promo-img-overlay"></div>
+        </div>
+        <span class="promo-badge">COMBO</span>
+        <span class="promo-tag">Defumado</span>
+        <div class="promo-content">
+          <h3 class="promo-title">Brasa Viva + Salad</h3>
+          <p class="promo-desc">Criamos essa seleção especial para quem quer fartura, preço justo e aquele sabor rústico que só a Uami tem. É pra comer bem, sem pressa e com muito sabor!</p>
+          <div class="promo-footer">
+            <div class="promo-price-block">
+              <div class="promo-old-price">—</div>
+              <div class="promo-new-price">R$ 88,90</div>
+            </div>
+            <a href="https://www.ifood.com.br/delivery/uberlandia-mg/uamiburguers-patrimonio/5c21b4ef-e6a5-4331-a794-6e3e85f37b72?utm_medium=share&prato=10301428-6d76-4fd4-b38c-22c60462cc29" target="_blank" class="promo-btn">Pedir</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5 - Uami Smash + Salad -->
+      <div class="promo-card card-5">
+        <div class="promo-img-placeholder">
+          🥩
+          <div class="promo-img-overlay"></div>
+        </div>
+        <span class="promo-badge">COMBO</span>
+        <span class="promo-tag">Clássico</span>
+        <div class="promo-content">
+          <h3 class="promo-title">Uami Smash + Salad</h3>
+          <p class="promo-desc">Criamos essa seleção especial para quem quer fartura, preço justo e aquele sabor rústico que só a Uami tem. É pra comer bem, sem pressa e com muito sabor!</p>
+          <div class="promo-footer">
+            <div class="promo-price-block">
+              <div class="promo-old-price">—</div>
+              <div class="promo-new-price">R$ 82,90</div>
+            </div>
+            <a href="https://www.ifood.com.br/delivery/uberlandia-mg/uamiburguers-patrimonio/5c21b4ef-e6a5-4331-a794-6e3e85f37b72?utm_medium=share&prato=2e592ad6-ae0e-42ba-9344-808ca21d8d07" target="_blank" class="promo-btn">Pedir</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CARDÁPIO -->
+<section class="cardapio-section" id="cardapio" style="max-width:1400px; margin: 0 auto;">
+  <div class="section-header">
+    <span class="section-eyebrow">Escolha o seu</span>
+    <h2 class="section-title">Cardápio</h2>
+    <div class="section-divider"></div>
+  </div>
+
+
+
+  <div class="menu-grid">
+
+    <!-- OS INEXPLICÁVEIS -->
+    <div class="menu-card" style="grid-column: 1 / -1; background: transparent; border: none; padding-bottom: 0;">
+      <div style="font-family:'Bebas Neue',cursive; font-size:1rem; letter-spacing:0.3em; color:var(--laranja); text-transform:uppercase; padding: 0.5rem 0 0.2rem;">🍔 Os Inexplicáveis</div>
+      <div style="width:40px; height:2px; background:linear-gradient(to right, var(--laranja), var(--vermelho));"></div>
+    </div>
+
+    <div class="menu-card">
+      <div class="menu-card-emoji mc-1">🍔
+        <span class="bestseller-tag">⭐ Carro-chefe</span>
+      </div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">O Inexplicável</div>
+        <div class="menu-card-desc">Blend 160g grelhado, queijo prato derretido, bacon crocante premium, cebola caramelizada artesanal e Maionese Uami no brioche selado.</div>
+        <div class="menu-card-footer">
+          <span class="menu-price">R$ 39,90</span>
+          <a href="https://www.ifood.com.br/delivery/uberlandia-mg/uamiburguers-patrimonio/5c21b4ef-e6a5-4331-a794-6e3e85f37b72?utm_medium=share&prato=48588f5e-35a0-4066-aa6f-249dabe0a03f" target="_blank" class="add-btn" title="Pedir no iFood">+</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card">
+      <div class="menu-card-emoji mc-3">🥩
+        <span class="bestseller-tag">🔥 O Clássico</span>
+      </div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Uami Smash</div>
+        <div class="menu-card-desc">2 Patties de 80g com crostinha de sabor, cheddar duplo derretido entre as carnes, cebola branca picadinha e Maionese Uami no brioche macio.</div>
+        <div class="menu-card-footer">
+          <span class="menu-price">R$ 30,80</span>
+          <a href="https://www.ifood.com.br/delivery/uberlandia-mg/uamiburguers-patrimonio/5c21b4ef-e6a5-4331-a794-6e3e85f37b72?utm_medium=share&prato=944fe404-78e4-4867-b74c-c4bd33fec676" target="_blank" class="add-btn" title="Pedir no iFood">+</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card">
+      <div class="menu-card-emoji mc-2">🔥</div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Brasa Viva</div>
+        <div class="menu-card-desc">Blend 160g, queijo mussarela elástico e molho barbecue rústico. Servido no pão levemente adocicado e selado na manteiga.</div>
+        <div class="menu-card-footer">
+          <span class="menu-price">R$ 35,90</span>
+          <a href="https://www.ifood.com.br/delivery/uberlandia-mg/uamiburguers-patrimonio/5c21b4ef-e6a5-4331-a794-6e3e85f37b72?utm_medium=share&prato=02c3a809-db3c-42dd-8cc2-6daa598503ea" target="_blank" class="add-btn" title="Pedir no iFood">+</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card">
+      <div class="menu-card-emoji mc-6">🌿</div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Uami Salad</div>
+        <div class="menu-card-desc">Blend 160g, queijo prato, alface americana crocante, tomate e cebola roxa fatiada fina. Acompanha Maionese Uami no brioche amanteigado.</div>
+        <div class="menu-card-footer">
+          <span class="menu-price">R$ 30,80</span>
+          <a href="https://www.ifood.com.br/delivery/uberlandia-mg/uamiburguers-patrimonio/5c21b4ef-e6a5-4331-a794-6e3e85f37b72?utm_medium=share&prato=47178ab1-147f-413c-9789-ed00e2353d0e" target="_blank" class="add-btn" title="Pedir no iFood">+</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMBOS UAMI -->
+    <div class="menu-card" style="grid-column: 1 / -1; background: transparent; border: none; padding-bottom: 0; padding-top: 2rem;">
+      <div style="font-family:'Bebas Neue',cursive; font-size:1rem; letter-spacing:0.3em; color:var(--laranja); text-transform:uppercase; padding: 0.5rem 0 0.2rem;">🍟 Combos Uami (burger + batata + refri)</div>
+      <div style="width:40px; height:2px; background:linear-gradient(to right, var(--laranja), var(--vermelho));"></div>
+    </div>
+
+    <div class="menu-card">
+      <div class="menu-card-emoji mc-1">⭐
+        <span class="bestseller-tag">❤️ O Favorito</span>
+      </div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Combo O Inexplicável</div>
+        <div class="menu-card-desc">01 Burger O Inexplicável + 01 Batata Uami Individual (150g) crocante e temperada + 01 Bebida Gelada lata 350ml.</div>
+        <div class="menu-card-footer">
+          <span class="menu-price">R$ 58,90</span>
+          <a href="https://www.ifood.com.br/delivery/uberlandia-mg/uamiburguers-patrimonio/5c21b4ef-e6a5-4331-a794-6e3e85f37b72?utm_medium=share&prato=1d4a4a02-dc4e-43a7-94ab-3f18208d526c" target="_blank" class="add-btn" title="Pedir no iFood">+</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card">
+      <div class="menu-card-emoji mc-3">🥩
+        <span class="bestseller-tag">🔥 O Raiz</span>
+      </div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Combo Smash</div>
+        <div class="menu-card-desc">01 Uami Smash + 01 Batata Uami Individual (150g) frita na hora + 01 Bebida Gelada lata 350ml. Rápido, prático e saboroso.</div>
+        <div class="menu-card-footer">
+          <span class="menu-price">R$ 51,70</span>
+          <a href="https://www.ifood.com.br/delivery/uberlandia-mg/uamiburguers-patrimonio/5c21b4ef-e6a5-4331-a794-6e3e85f37b72?utm_medium=share&prato=f5bf15cb-e4a2-4ce9-9bf9-61d48611d3ec" target="_blank" class="add-btn" title="Pedir no iFood">+</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card">
+      <div class="menu-card-emoji mc-2">🔥</div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Combo Brasa Viva</div>
+        <div class="menu-card-desc">01 Burger Brasa Viva + 01 Batata Uami Individual (150g) crocante e sequinha + 01 Bebida Gelada lata 350ml.</div>
+        <div class="menu-card-footer">
+          <span class="menu-price">R$ 56,80</span>
+          <a href="https://www.ifood.com.br/delivery/uberlandia-mg/uamiburguers-patrimonio/5c21b4ef-e6a5-4331-a794-6e3e85f37b72?utm_medium=share&prato=1f2d76c4-1545-4d85-ada9-a1cd68b08fbe" target="_blank" class="add-btn" title="Pedir no iFood">+</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card">
+      <div class="menu-card-emoji mc-6">🌿</div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Combo Uami Salad</div>
+        <div class="menu-card-desc">01 Burger Uami Salad + 01 Batata Uami Individual (150g) temperada com nosso blend de sal + 01 Bebida Gelada lata 350ml.</div>
+        <div class="menu-card-footer">
+          <span class="menu-price">R$ 50,90</span>
+          <a href="https://www.ifood.com.br/delivery/uberlandia-mg/uamiburguers-patrimonio/5c21b4ef-e6a5-4331-a794-6e3e85f37b72?utm_medium=share&prato=eb28470b-4317-4c58-8fec-3090c94048d8" target="_blank" class="add-btn" title="Pedir no iFood">+</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMBOS GALERA -->
+    <div class="menu-card" style="grid-column: 1 / -1; background: transparent; border: none; padding-bottom: 0; padding-top: 2rem;">
+      <div style="font-family:'Bebas Neue',cursive; font-size:1rem; letter-spacing:0.3em; color:var(--laranja); text-transform:uppercase; padding: 0.5rem 0 0.2rem;">👨‍👩‍👧‍👦 Combos Galera</div>
+      <div style="width:40px; height:2px; background:linear-gradient(to right, var(--laranja), var(--vermelho));"></div>
+    </div>
+
+    <div class="menu-card">
+      <div class="menu-card-emoji mc-5">👑
+        <span class="bestseller-tag">👨‍👩‍👧 Família</span>
+      </div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Combo Família Uami</div>
+        <div class="menu-card-desc">04 Burgers à escolha (Smash, Inexplicável ou Salad) + Batata Família (400g) para compartilhar. Serve de 4 a 5 pessoas!</div>
+        <div class="menu-card-footer">
+          <span class="menu-price">R$ 140,00</span>
+          <a href="https://www.ifood.com.br/delivery/uberlandia-mg/uamiburguers-patrimonio/5c21b4ef-e6a5-4331-a794-6e3e85f37b72?utm_medium=share&prato=eb28470b-4317-4c58-8fec-3090c94048d8" target="_blank" class="add-btn" title="Pedir no iFood">+</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- PARA ACOMPANHAR -->
+    <div class="menu-card" style="grid-column: 1 / -1; background: transparent; border: none; padding-bottom: 0; padding-top: 2rem;">
+      <div style="font-family:'Bebas Neue',cursive; font-size:1rem; letter-spacing:0.3em; color:var(--laranja); text-transform:uppercase; padding: 0.5rem 0 0.2rem;">🍟 Para Acompanhar</div>
+      <div style="width:40px; height:2px; background:linear-gradient(to right, var(--laranja), var(--vermelho));"></div>
+    </div>
+
+    <div class="menu-card">
+      <div class="menu-card-emoji mc-7">🍟</div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Batatas Uami Individual</div>
+        <div class="menu-card-desc">Porção individual de batatas palito (150g), fritas em óleo sempre limpo. Temperadas com nosso blend de sal e especiarias.</div>
+        <div class="menu-card-footer">
+          <span class="menu-price">R$ 16,80</span>
+          <a href="https://www.ifood.com.br/delivery/uberlandia-mg/uamiburguers-patrimonio/5c21b4ef-e6a5-4331-a794-6e3e85f37b72?prato=e152389c-b65c-404f-8c27-d7415608f4fc" target="_blank" class="add-btn" title="Pedir no iFood">+</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card">
+      <div class="menu-card-emoji mc-7">🍟</div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Batatas Uami G (Família)</div>
+        <div class="menu-card-desc">Porção familiar de batatas palito (400g), fritas em óleo sempre limpo. Temperadas com nosso blend de sal e especiarias — feito para a família!</div>
+        <div class="menu-card-footer">
+          <span class="menu-price">R$ 36,00</span>
+          <a href="https://www.ifood.com.br/delivery/uberlandia-mg/uamiburguers-patrimonio/5c21b4ef-e6a5-4331-a794-6e3e85f37b72?prato=111eb7ee-82a0-42cb-9838-ddb03d6016b3" target="_blank" class="add-btn" title="Pedir no iFood">+</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card">
+      <div class="menu-card-emoji mc-4">🥤</div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Coca-Cola 350ml</div>
+        <div class="menu-card-desc">Lata 350ml gelada. Original ou sem açúcar.</div>
+        <div class="menu-card-footer">
+          <span class="menu-price">R$ 10,00</span>
+          <a href="https://www.ifood.com.br/delivery/uberlandia-mg/uamiburguers-patrimonio/5c21b4ef-e6a5-4331-a794-6e3e85f37b72?prato=6a062bb7-6628-4c38-8679-21f86924db77" target="_blank" class="add-btn" title="Pedir no iFood">+</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card">
+      <div class="menu-card-emoji mc-4">🥤</div>
+      <div class="menu-card-body">
+        <div class="menu-card-name">Coca-Cola 600ml</div>
+        <div class="menu-card-desc">Garrafa 600ml gelada. Original ou sem açúcar.</div>
+        <div class="menu-card-footer">
+          <span class="menu-price">R$ 12,00</span>
+          <a href="https://www.ifood.com.br/delivery/uberlandia-mg/uamiburguers-patrimonio/5c21b4ef-e6a5-4331-a794-6e3e85f37b72?prato=eee59168-d58e-4f8c-8299-eb368fde021b" target="_blank" class="add-btn" title="Pedir no iFood">+</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contato">
+  <span class="footer-logo">UAMI</span>
+  <p class="footer-info" style="font-family:'Playfair Display',serif; font-style:italic; font-size:0.95rem; color:rgba(250,245,238,0.6); margin-bottom:1.2rem;">"Aqui você encontra o inexplicável —<br>aquilo que não se explica, mas sente."</p>
+  <p class="footer-info">📞 (13) 9 9662-3562</p>
+  <p class="footer-info">🕐 Sábado & Domingo: 18h–23h</p>
+  <a href="https://www.ifood.com.br/delivery/uberlandia-mg/uamiburguers-patrimonio/5c21b4ef-e6a5-4331-a794-6e3e85f37b72?utm_medium=share" target="_blank" class="btn-primary" style="display:inline-block; margin-top:1.5rem; font-size:0.85rem;">🛵 Pedir pelo iFood</a>
+
+  <div class="social-links">
+    <a href="https://www.instagram.com/.uami.burguers?igsh=cms1dWF3eGV2M2E1" class="social-link">📸</a>
+    <a href="#" class="social-link">🎵</a>
+    <a href="#" class="social-link">💬</a>
+  </div>
+
+  <p class="footer-copy">© 2025 UAMI Hamburgueria. Todos os direitos reservados.</p>
+</footer>
+
+<script>
+  // Tab switching
+  const tabs = document.querySelectorAll('.tab');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+
+  // Promo buttons
+  const promoBtns = document.querySelectorAll('.promo-btn');
+  promoBtns.forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      // allow link to open, no extra JS needed
+    });
+  });
+</script>
+</body>
+</html>
